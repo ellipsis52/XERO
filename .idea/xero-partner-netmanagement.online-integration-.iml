@@ -7,3 +7,239 @@
     <orderEntry type="sourceFolder" forTests="false" />
   </component>
 </module>
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="87596fe1-6ed7-4814-abc3-c53088b8d6c1" name="Changes" comment="by netmanagement.online" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" show_ignored="true">
+    <option name="groupingKeys">
+      <option value="directory" />
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="PUSH_TAGS">
+      <GitPushTagMode>
+        <option name="argument" value="--tags" />
+        <option name="title" value="All" />
+      </GitPushTagMode>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;netmanagement-online&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/netmanagement-online/webauthn.me-master.git&quot;,
+    &quot;accountId&quot;: &quot;c7af723e-6b3d-4fd2-8a6f-ec8b66f87451&quot;
+  }
+}</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="DEPENDENCY_CHECKER_PROBLEMS_TAB" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 2
+}</component>
+  <component name="ProjectId" id="2r17UTS4tI3E3CjxUD0Oaa2TifF" />
+  <component name="ProjectViewState">
+    <option name="autoscrollFromSource" value="true" />
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="openDirectoriesWithSingleClick" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Python.netmanagement.executor": "Run",
+    "Python.pip.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "master",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "ChangesTree.GroupingKeys": [
+      "directory"
+    ]
+  }
+}]]></component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-deb605915726-JavaScript-RM-243.22562.213" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="87596fe1-6ed7-4814-abc3-c53088b8d6c1" name="Changes" comment="" />
+      <created>1735714743098</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1735714743098</updated>
+      <workItem from="1735717273716" duration="688000" />
+      <workItem from="1735717967801" duration="5549000" />
+      <workItem from="1739397064694" duration="34000" />
+    </task>
+    <task id="LOCAL-00001" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1735717502453</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1735717502453</updated>
+    </task>
+    <task id="LOCAL-00002" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1735717674639</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1735717674639</updated>
+    </task>
+    <task id="LOCAL-00003" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1735718437878</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1735718437878</updated>
+    </task>
+    <task id="LOCAL-00004" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1735718760815</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1735718760815</updated>
+    </task>
+    <task id="LOCAL-00005" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1735718779923</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1735718779923</updated>
+    </task>
+    <task id="LOCAL-00006" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1735718992092</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1735718992092</updated>
+    </task>
+    <task id="LOCAL-00007" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1735755414588</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1735755414588</updated>
+    </task>
+    <task id="LOCAL-00008" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1735755685363</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1735755685363</updated>
+    </task>
+    <task id="LOCAL-00009" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1735781608185</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1735781608185</updated>
+    </task>
+    <task id="LOCAL-00010" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1735781632923</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1735781632923</updated>
+    </task>
+    <task id="LOCAL-00011" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1735781759034</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1735781759034</updated>
+    </task>
+    <task id="LOCAL-00012" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1736917445279</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1736917445279</updated>
+    </task>
+    <task id="LOCAL-00013" summary="by netmanagement.online">
+      <option name="closed" value="true" />
+      <created>1736917545637</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1736917545637</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="OPEN_GENERIC_TABS">
+      <map>
+        <entry key="5e05b4ff-61bd-4476-b57f-234466bed044" value="TOOL_WINDOW" />
+      </map>
+    </option>
+    <option name="TAB_STATES">
+      <map>
+        <entry key="5e05b4ff-61bd-4476-b57f-234466bed044">
+          <value>
+            <State />
+          </value>
+        </entry>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="by netmanagement.online" />
+    <option name="LAST_COMMIT_MESSAGE" value="by netmanagement.online" />
+  </component>
+</project>
