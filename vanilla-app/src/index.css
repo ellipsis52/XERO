@@ -11,13 +11,3 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
-body {
-  @apply p-4 text-gray-800 bg-gray-100;
-}
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
