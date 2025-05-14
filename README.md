@@ -111,7 +111,7 @@ XERO_CLIENT_SECRET=your_client_secret
 REDIRECT_URI=http://localhost:3000/callback
 Start the application:
 
-npm start
+ npm start
 🎯 Project Goal
 
 To build a secure, intuitive, and automated financial platform — fully integrated with the Xero ecosystem.
@@ -167,7 +167,7 @@ Before you begin, make sure you have:
 Authentication is the golden key. Here’s how to get an `access_token`:
 
 #### Step 1 - Generate Authorization URL:
-https://login.xero.com/identity/connect/authorize?response_type=code&client_id=YOUR_CLIENT_ID&redirect_uri=https://your-backend.com/callback&scope=openid profile email accounting.transactions offline_access&state=123
+https://login.xero.com/identity/connect/authorize?response_type=code&client_id=&redirect_uri=https://your-backend.com/callback&scope=openid profile email accounting.transactions offline_access&state=123
 
 
 Replace `YOUR_CLIENT_ID` with your real ID.
@@ -225,7 +225,7 @@ Body:
 Use Okta to manage sessions and user roles via JWT.
 Store access_token and refresh_token securely (use .env or Vault).
 Refresh tokens using the refresh_token every 30 minutes:
-curl -X POST https://identity.xero.com/connect/token \
+curl -X POST https://identity.xero.com/connect/tokenGET \
 -d 'grant_type=refresh_token' \
 -d 'refresh_token=...' \
 -d 'client_id=...' \

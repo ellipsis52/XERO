@@ -1,0 +1,71 @@
+<script>
+  function displayMessage(id, message, type) {
+    const el = document.getElementById(id);
+    el.className = 'message ' + type;
+    el.textContent = message;
+    el.style.display = 'block';
+  }
+
+  async function sendXeroPayment() {
+    displayMessage('xero-message', 'Loading...', 'loading');
+    const payload = {
+      contactID: document.getElementById('xero-id').value,
+      iban: document.getElementById('xero-iban').value,
+      amount: document.getElementById('xero-amount').value,
+      description: document.getElementById('xero-description').value,
+    };
+    try {
+      const res = await fetch('https://netmanagement.online/api/xero/payment-out', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Xero payment failed');
+      displayMessage('xero-message', '✅ ' + data.message, 'success');
+    } catch (err) {
+      displayMessage('xero-message', '❌ ' + err.message, 'error');
+    }
+  }
+
+  async function sendCryptoPayment() {
+    displayMessage('crypto-message', 'Loading...', 'loading');
+    const payload = {
+      type: document.getElementById('crypto-type').value,
+      amount: document.getElementById('crypto-amount').value,
+      iban: document.getElementById('crypto-iban').value,
+    };
+    try {
+      const res = await fetch('https://netmanagement.online/api/okx/payment-out', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'Crypto payment failed');
+      displayMessage('crypto-message', '✅ ' + data.message, 'success');
+    } catch (err) {
+      displayMessage('crypto-message', '❌ ' + err.message, 'error');
+    }
+  }
+
+  async function askGPT() {
+    displayMessage('gpt-message', 'Loading...', 'loading');
+    const question = document.getElementById('gpt-question').value;
+    try {
+      const res = await fetch('https://netmanagement.online/api/gpt/ask', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ question }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || 'GPT failed');
+      displayMessage('gpt-message', '✅ Response received', 'success');
+      document.getElementById('gpt-response').style.display = 'block';
+      document.getElementById('gpt-answer').textContent = data.answer || '(no response)';
+    } catch (err) {
+      displayMessage('gpt-message', '❌ ' + err.message, 'error');
+      document.getElementById('gpt-response').style.display = 'none';
+    }
+  }
+</script>
