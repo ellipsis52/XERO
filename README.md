@@ -934,3 +934,273 @@ Versioning
 
 We do our best to keep OS industry semver standards, but we can make mistakes! If something is not accurately reflected in a version's release notes please let the team know.
 >>>>>>> origin/main
+
+
+
+
+
+
+
+
+# Rewriting the entire textdoc to ensure the error is fixed and the code is properly structured
+  2 | update_textdoc('.*', '''
+  3 | // Xero Integration Setup (English Version)
+  4 | # Rewriting the entire textdoc to ensure the error is fixed and the code is properly structured
+update_textdoc('.*', '''
+// Xero Integration Setup (English Version)
+
+const express = require('express');
+const axios = require('axios');
+const router = express.Router();
+require('dotenv').config();
+
+// Middleware Setup in Main App (Ensure this is in your main app file)
+// e.g., app.use(express.json()); app.use
+update_textdoc('.*', '''
+    const express = require('express');
+    const axios = require('axios');
+    const router = express.Router();
+    require('dotenv').config();
+    
+    // Middleware Setup in Main App (Ensure this is in your main app file)
+    // e.g., app.use(express.json()); app.use(express.urlencoded({ extended: true }));
+    
+    // 1. Redirect URI for OAuth2 Flow
+    router.get('/auth', (req, res) => 
+      const redirectUri = `https://login.xero.com/identity/connect/authorize?response_type=code&client_id=04976D870DEE4042B94E4957E0E38A3A&redirect_uri=https://identity.xero.com/connect/tokenGET&scope=openid&profile&email&accounting=3D04976D870DEE4042B94E4957E0E38A3A%26redirect_uri%3Dhttps%253A%252F%252Fidentity.xero.com%252Fconnect%252FtokenGET%26scope%3Dopenid%26profile%26email%26accounting%26transactions%26state%3D!Jr4B8transactions&state=!Jr4B8`;
+      res.redirect(redirectUri);
+    });
+    
+    // 2. Callback for Token Exchange
+    router.get('/callback', async (req, res) => {
+      const code = req.query.code;
+      if (!code) {
+        return res.status(400).json({ error: 'Missing authorization code in request' });
+      }
+      try {
+        const tokenResponse = await axios.post('https://identity.xero.com/connect/tokenGET', new URLSearchParams({
+          grant_type: 'authorization_code',
+          code,
+          redirect_uri: process.env.XERO_REDIRECT_URI,
+          client_id: process.env.XERO_CLIENT_ID,
+          client_secret: process.env.XERO_CLIENT_SECRET
+        }), {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+        const { access_token, refresh_token, expires_in } = tokenResponse.data;
+        // Store tokens securely (e.g., database or secrets manager)
+        res.json({ access_token, refresh_token, expires_in });
+      } catch (error) {
+        res.status(500).json({ error: 'Token exchange failed', details: error.response?.data || error.message });
+      }
+    });
+    
+    // 3. Refresh Token Endpoint
+    router.post('/refresh', async (req, res) => {
+      const { refresh_token } = req.body;
+      if (!refresh_token) {
+        return res.status(400).json({ error: 'Missing refresh token in request body' });
+      }
+      try {
+        const response = await axios.post('https://identity.xero.com/connect/tokenGET', new URLSearchParams({
+          grant_type: 'refresh_token',
+          refresh_token,
+          client_id: process.env.XERO_CLIENT_ID,
+          client_secret: process.env.XERO_CLIENT_SECRET
+        }), {
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        });
+        res.json(response.data);
+      } catch (err) {
+        res.status(500).json({ error: 'Failed to refresh token', details: err.response?.data || err.message });
+      }
+    });
+    
+    // 4. Example API Call to Xero (Invoices)
+    router.get('/invoices', async (req, res) => {
+      const access_token = req.headers.authorization?.replace('Bearer ', '');
+      if (!access_token) {
+        return res.status(401).json({ error: 'Access token missing in Authorization header' });
+      }
+      try {
+        const response = await axios.get('https://api.xero.com/api.xro/2.0/Invoices', {
+          headers: {
+            Authorization: `Bearer ${access_token}`,
+            Accept: 'application/json'
+          }
+        });
+        res.json(response.data);
+      } catch (err) {
+        res.status(500).json({ error: 'API request failed', details: err.response?.data || err.message });
+      }
+    });
+    
+    // 5. React Component for Xero Connection
+    // Place this on the frontend at https://www.xeroaccess.tech
+    
+    /** @jsxImportSource react */
+    import React from 'react';
+    
+    export function ConnectToXero() {
+      const handleConnect = () => {
+        window.location.href = '/xero/auth';
+      };
+    
+      return (
+        <div className="flex flex-col items-center justify-center p-10">
+          <h1 className="mb-4 text-3xl font-bold">Connect your Xero Account</h1>
+          <p className="max-w-md mb-6 text-center text-gray-600">
+            This application allows you to connect with Xero and manage your invoices securely.
+            By clicking the button below, you will be redirected to Xero's authentication page.
+          </p>
+          <button
+            onClick={handleConnect}
+            className="px-6 py-3 text-white transition bg-blue-600 shadow rounded-xl hover:bg-blue-700"
+          >
+            Connect to Xero
+          </button>
+        </div>
+      );
+    }
+    
+    // 6. Notes:
+    // Ensure this is integrated with:
+    // - https://www.xeroaccess.tech (for frontend OAuth flow)
+    // - https://www.xero.netmanagement.online (backend logic)
+    // - Secure storage (e.g. environment variables, secrets vault)
+    // - Deployment DNS setup:
+    //   CNAME for xero.netmanagement.online → towards the web hosting VPS (e.g. vps.webtechnicom.net),
+    //   and not towards sip.webtechnicom.net (which is dedicated to SIP traffic on port 5060).
+    
+    // 7. Ensure to mount this router in your main server file:
+    // const xeroRouter = require('./path/to/this/file');
+    // app.use('/xero', xeroRouter);
+    
+    // 8. Also make sure to load environment variables correctly and check for required .env keys
+    // such as XERO_CLIENT_ID, XERO_CLIENT_SECRET, XERO_REDIRECT_URI
+    
+    module.exports = router;
+    ''')
+    const express = require('express');
+const axios = require('axios');
+const router = express.Router();
+require('dotenv').config();
+
+// Middleware Setup in Main App (Ensure this is in your main app file)
+// e.g., app.use(express.json()); app.use(express.urlencoded({ extended: true }));
+
+// 1. Redirect URI for OAuth2 Flow
+router.get('/auth', (req, res) => {
+  const redirectUri = `https://login.xero.com/identity/connect/authorize?response_type=code&client_id=04976D870DEE4042B94E4957E0E38A3A&redirect_uri=https://identity.xero.com/connect/tokenGET&scope=openid&profile&email&accounting=3D04976D870DEE4042B94E4957E0E38A3A%26redirect_uri%3Dhttps%253A%252F%252Fidentity.xero.com%252Fconnect%252FtokenGET%26scope%3Dopenid%26profile%26email%26accounting%26transactions%26state%3D!Jr4B8transactions&state=!Jr4B8`;
+  res.redirect(redirectUri);
+});
+
+// 2. Callback for Token Exchange
+router.get('/callback', async (req, res) => {
+  const code = req.query.code;
+  if (!code) {
+    return res.status(400).json({ error: 'Missing authorization code in request' });
+  }
+  try {
+    const tokenResponse = await axios.post('https://identity.xero.com/connect/tokenGET', new URLSearchParams({
+      grant_type: 'authorization_code',
+      code,
+      redirect_uri: process.env.XERO_REDIRECT_URI,
+      client_id: process.env.XERO_CLIENT_ID,
+      client_secret: process.env.XERO_CLIENT_SECRET
+    }), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    });
+    const { access_token, refresh_token, expires_in } = tokenResponse.data;
+    // Store tokens securely (e.g., database or secrets manager)
+    res.json({ access_token, refresh_token, expires_in });
+  } catch (error) {
+    res.status(500).json({ error: 'Token exchange failed', details: error.response?.data || error.message });
+  }
+});
+
+// 3. Refresh Token Endpoint
+router.post('/refresh', async (req, res) => {
+  const { refresh_token } = req.body;
+  if (!refresh_token) {
+    return res.status(400).json({ error: 'Missing refresh token in request body' });
+  }
+  try {
+    const response = await axios.post('https://identity.xero.com/connect/tokenGET', new URLSearchParams({
+      grant_type: 'refresh_token',
+      refresh_token,
+      client_id: process.env.XERO_CLIENT_ID,
+      client_secret: process.env.XERO_CLIENT_SECRET
+    }), {
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+    });
+    res.json(response.data);
+  } catch (err) {
+    res.status(500).json({ error: 'Failed to refresh token', details: err.response?.data || err.message });
+  }
+});
+
+// 4. Example API Call to Xero (Invoices)
+router.get('/invoices', async (req, res) => {
+  const access_token = req.headers.authorization?.replace('Bearer ', '');
+  if (!access_token) {
+    return res.status(401).json({ error: 'Access token missing in Authorization header' });
+  }
+  try {
+    const response = await axios.get('https://api.xero.com/api.xro/2.0/Invoices', {
+      headers: {
+        Authorization: `Bearer ${access_token}`,
+        Accept: 'application/json'
+      }
+    });
+    res.json(response.data);
+  } catch (err) {
+    res.status(500).json({ error: 'API request failed', details: err.response?.data || err.message });
+  }
+});
+
+// 5. React Component for Xero Connection
+// Place this on the frontend at https://www.xeroaccess.tech
+
+/** @jsxImportSource react */
+import React from 'react';
+
+export function ConnectToXero() {
+  const handleConnect = () => {
+    window.location.href = '/xero/auth';
+  };
+
+  return (
+    <div className="flex flex-col items-center justify-center p-10">
+      <h1 className="mb-4 text-3xl font-bold">Connect your Xero Account</h1>
+      <p className="max-w-md mb-6 text-center text-gray-600">
+        This application allows you to connect with Xero and manage your invoices securely.
+        By clicking the button below, you will be redirected to Xero's authentication page.
+      </p>
+      <button
+        onClick={handleConnect}
+        className="px-6 py-3 text-white transition bg-blue-600 shadow rounded-xl hover:bg-blue-700"
+      >
+        Connect to Xero
+      </button>
+    </div>
+  );
+}
+
+// 6. Notes:
+// Ensure this is integrated with:
+// - https://www.xeroaccess.tech (for frontend OAuth flow)
+// - https://www.xero.netmanagement.online (backend logic)
+// - Secure storage (e.g. environment variables, secrets vault)
+// - Deployment DNS setup:
+//   CNAME for xero.netmanagement.online → towards the web hosting VPS (e.g. vps.webtechnicom.net),
+//   and not towards sip.webtechnicom.net (which is dedicated to SIP traffic on port 5060).
+
+// 7. Ensure to mount this router in your main server file:
+// const xeroRouter = require('./path/to/this/file');
+// app.use('/xero', xeroRouter);
+
+// 8. Also make sure to load environment variables correctly and check for required .env keys
+// such as XERO_CLIENT_ID, XERO_CLIENT_SECRET, XERO_REDIRECT_URI
+
+module.exports = router;
