@@ -1,1 +1,18 @@
 npm run build
+const updateInvoice = async (invoiceId, updateFields) => {
+  const res = await fetch(`http://localhost:4242/xero/invoices/${invoiceId}`, {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(updateFields),
+  });
+  if (!res.ok) throw new Error('Échec de mise à jour');
+  return res.json();
+};
+
+const voidInvoice = async (invoiceId) => {
+  const res = await fetch(`http://localhost:4242/xero/invoices/${invoiceId}/void`, {
+    method: 'POST',
+  });
+  if (!res.ok) throw new Error('Échec d’annulation');
+  return res.json();
+};
