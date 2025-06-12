@@ -1,0 +1,10 @@
+app.post('/api/gpt/ask', async (req, res) => {
+  const { question } = req.body;
+  try {
+    const completion = await gpt.ask(question);
+    res.json({ message: 'Réponse générée avec succès', answer: completion });
+  } catch (err) {
+    console.error('[GPT] Error:', err);
+    res.status(500).json({ message: 'Erreur GPT' });
+  }
+});

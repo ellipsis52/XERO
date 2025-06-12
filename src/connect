@@ -1,0 +1,20 @@
+import axios from 'axios';
+
+router.get('/connect', async (req, res) => {
+  const apiKey = process.env.OKX_API_KEY;
+  const apiSecret = process.env.OKX_API_SECRET;
+
+  try {
+    const response = await axios.get('https://www.okx.com/api/v5/account/balance', {
+      headers: {
+        'OK-ACCESS-KEY': apiKey,
+        'OK-ACCESS-SIGN': '...', // signature calculée
+        'OK-ACCESS-TIMESTAMP': new Date().toISOString(),
+        'OK-ACCESS-PASSPHRASE': process.env.OKX_PASSPHRASE,
+      },
+    });
+    res.json(response.data);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
