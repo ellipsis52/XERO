@@ -321,5 +321,28 @@ Add comment
 			<script src="assets/js/util.js"></script>
 			<script src="assets/js/main.js"></script>
 
-	</body>
+	</body><script>
+    document.getElementById("payment-form").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      try {
+        const response = await fetch("/create-checkout-session", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ iban: document.getElementById("iban").value })
+        });
+    
+        if (!response.ok) {
+          throw new Error("Échec lors de la création de la session de paiement.");
+        }
+    
+        const result = await response.json();
+        // Redirige peut-être vers une page de paiement
+        window.location.href = result.url;
+      } catch (error) {
+        console.error("Erreur lors de l'envoi du formulaire :", error);
+        alert("Une erreur est survenue lors de la soumission.");
+      }
+    });
+    </script>
+    
 </html>
