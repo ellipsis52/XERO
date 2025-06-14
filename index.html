@@ -4,14 +4,130 @@
 	html5up.net | @ajlkn
 	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 -->
-<html>
+<html>	</head><!DOCTYPE html>
+<html lang="fr">Add commentMore actions
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stripe Checkout</title>
+  <style>
+    body, button { font-family: sans-serif; }
+    body { max-width: 600px; margin: auto; padding: 2rem; }
+    button {
+      padding: .75rem 1.5rem;
+      background: black; color: white;
+      border: 2px solid black; border-radius: .5rem;
+      cursor: pointer; transition: .3s;
+    }
+    button:hover { background: white; color: black;}
+  </style>
+</head>
+<body>
+  <h1>Payer avec Stripe</h1>
+  <button id="checkout-button">Procéder au paiement</button>
+
+  <script src="https://js.stripe.com/v3/"></script>
+  <script>
+    const stripe = Stripe("pk_test_TA_CLE_PUBLIQUE");
+
+    document.getElementById("checkout-button").addEventListener("click", () => {
+      fetch("/api/create-checkout-session", { method: "POST" })
+        .then(r => r.json())
+        .then(s => stripe.redirectToCheckout({ sessionId: s.id }))
+        .catch(console.error);
+    });
+  </script>
+</body><!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payer via Xero</title>
+  <style>
+    body, button { font-family: sans-serif; }
+    body { max-width: 600px; margin: auto; padding: 2rem; }
+    button {
+      padding: .75rem 1.5rem;
+      background: black; color: white;
+      border: 2px solid black; border-radius: .5rem;
+      cursor: pointer; transition: .3s;
+    }
+    button:hover { background: white; color: black;}
+  </style>
+</head>
+<body>
+  <h1>Paiement Xero</h1>
+  <label for="contactId">Contact ID:</label>
+  <input id="contactId" type="text" placeholder="abc123" />
+  <br /><br />
+  <button id="xero-pay">Envoyer via Xero</button>
+
+  <script>
+    document.getElementById("xero-pay").addEventListener("click", () => {
+      const contactId = document.getElementById("contactId").value.trim();
+      if (!contactId) { alert("Donne un contact ID."); return; }
+
+      fetch("/api/xero/pay", {
+        method: "POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify({ contactId, amount: 100, currency: "USD" })
+      })
+      .then(r => r.json())
+      .then(data => alert("Xero Payment: " + data.status))
+      .catch(console.error);
+    });
+  </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Payer via Xero</title>
+  <style>
+    body, button { font-family: sans-serif; }
+    body { max-width: 600px; margin: auto; padding: 2rem; }
+    button {
+      padding: .75rem 1.5rem;
+      background: black; color: white;
+      border: 2px solid black; border-radius: .5rem;
+      cursor: pointer; transition: .3s;
+    }
+    button:hover { background: white; color: black;}
+  </style>
+</head>
+<body>
+  <h1>Paiement Xero</h1>
+  <label for="contactId">Contact ID:</label>
+  <input id="contactId" type="text" placeholder="abc123" />
+  <br /><br />
+  <button id="xero-pay">Envoyer via Xero</button>
+
+  <script>
+    document.getElementById("xero-pay").addEventListener("click", () => {
+      const contactId = document.getElementById("contactId").value.trim();
+      if (!contactId) { alert("Donne un contact ID."); return; }
+
+      fetch("/api/xero/pay", {
+        method: "POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify({ contactId, amount: 100, currency: "USD" })
+      })
+      .then(r => r.json())
+      .then(data => alert("Xero Payment: " + data.status))
+      .catch(console.error);
+    });
+  </script>
+</body>
+</html>
+
+</html>
+Add comment
 	<head>
 		<title>Hyperspace by HTML5 UP</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<noscript><link rel="stylesheet" href="assets/css/noscript.css" /></noscript>
-	</head>
+	</head>cryptocurrency payment gateways: Integration of solutions allowing merchants to accept payments in various cryptocurrencies, facilitating transactions for customers using digital currencies
 	<body class="is-preload">
 
 		<!-- Sidebar -->
@@ -61,8 +177,8 @@
 							<a href="#" class="image"><img src="images/pic02.jpg" alt="" data-position="top center" /></a>
 							<div class="content">
 								<div class="inner">
-									<h2>Feugiat consequat</h2>
-									<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
+									<h2>Move to Stripe</h2>
+									<p>When users access our service, Okta handles secure authentication. It ensures every user is verified, with precise control over permissions and access levels. This layer of security means businesses can manage users confidently, whether it’s employees, accountants, or partners.</p>
 									<ul class="actions">
 										<li><a href="generic.html" class="button">Learn more</a></li>
 									</ul>
@@ -73,8 +189,8 @@
 							<a href="#" class="image"><img src="images/pic03.jpg" alt="" data-position="25% 25%" /></a>
 							<div class="content">
 								<div class="inner">
-									<h2>Ultricies aliquam</h2>
-									<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus.</p>
+									<h2>Get on true</h2>
+									<p>Through our Xero Partner 2.0 integration, we offer full-featured access to Xero’s ecosystem. That includes user role management, billing synchronization, and real-time financial data processing. The ‘point twenty’ framework is central to managing accounts and users efficiently, and it’s been working very smoothly for our partners.</p>
 									<ul class="actions">
 										<li><a href="generic.html" class="button">Learn more</a></li>
 									</ul>
@@ -87,37 +203,37 @@
 					<section id="two" class="wrapper style3 fade-up">
 						<div class="inner">
 							<h2>What we do</h2>
-							<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p>
+							<p>Then, we bring in GPT-4. This is where intelligence takes over. We use GPT-4 to analyze financial data, assist users in understanding reports, and automate complex workflows. For example, it can summarize cash flow trends, help write financial commentary, or even support decision-making with predictive insights. It’s like having an intelligent assistant built into your financial system.</p>
 							<div class="features">
 								<section>
 									<span class="icon solid major fa-code"></span>
-									<h3>Lorem ipsum amet</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+									<h3>How our algorithm work's</h3>
+									<p>Beyond automation and integration, GPT-4 brings advanced intelligence into daily operations. It doesn’t just assist—it actively helps users understand and act on their financial data. Whether a client wants to know where their money is going, forecast future trends, or analyze monthly expenses, GPT-4 can guide them clearly and naturally.</p>
 								</section>
 								<section>
 									<span class="icon solid major fa-lock"></span>
-									<h3>Aliquam sed nullam</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+									<h3>Xero and JAX</h3>
+									<p>Now, when we combine that with JAX—our analytics and visualization engine—it becomes even more powerful. JAX turns raw financial data into clear, interactive dashboards. It makes finance visual, fast, and accessible. GPT-4 then adds context, interpreting the visuals, spotting patterns, and even suggesting next steps. So instead of just seeing a chart, a user might get a helpful insight like: ‘Spending on marketing increased twenty percent this month—consider reviewing campaign performance.</p>
 								</section>
 								<section>
 									<span class="icon solid major fa-cog"></span>
-									<h3>Sed erat ullam corper</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+									<h3>Course of object</h3>
+									<p>Automatic conversion: Services that automatically convert cryptocurrency payments into fiat currency, reducing the risk associated with crypto volatility.</p>
 								</section>
 								<section>
 									<span class="icon solid major fa-desktop"></span>
-									<h3>Veroeros quis lorem</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+									<h3>Submiting an API</h3>
+									<p>API integrations: Providing application programming interfaces (APIs) for seamless integration with existing e-commerce systems, simplifying cryptocurrency payment management.</p>
 								</section>
 								<section>
 									<span class="icon solid major fa-link"></span>
-									<h3>Urna quis bibendum</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+									<h3>The use of our service/h3>
+									<p>ogether, GPT-4 and JAX give clients more than just data—they give understanding, recommendations, and real business intelligence. It’s not just about managing money—it’s about making smarter moves.</p>
 								</section>
 								<section>
 									<span class="icon major fa-gem"></span>
-									<h3>Aliquam urna dapibus</h3>
-									<p>Phasellus convallis elit id ullam corper amet et pulvinar. Duis aliquam turpis mauris, sed ultricies erat dapibus.</p>
+									<h3>Compliance and Security</h3>
+									<p>Compliance and security: Implementation of advanced security measures and compliance with regulations to protect merchants and their customers.</p>
 								</section>
 							</div>
 							<ul class="actions">
@@ -130,7 +246,7 @@
 					<section id="three" class="wrapper style1 fade-up">
 						<div class="inner">
 							<h2>Get in touch</h2>
-							<p>Phasellus convallis elit id ullamcorper pulvinar. Duis aliquam turpis mauris, eu ultricies erat malesuada quis. Aliquam dapibus, lacus eget hendrerit bibendum, urna est aliquam sem, sit amet imperdiet est velit quis lorem.</p>
+							<p>ryptocurrency payment gateways: Integration of solutions allowing merchants to accept payments in various cryptocurrencies, facilitating transactions for customers using digital currencies</p>
 							<div class="split style1">
 								<section>
 									<form method="post" action="#">
@@ -191,7 +307,7 @@
 			<footer id="footer" class="wrapper style1-alt">
 				<div class="inner">
 					<ul class="menu">
-						<li>&copy; Untitled. All rights reserved.</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
+						<li>&copy; copyright 2025. All rights reserved netmanagement.online</li><li>Design: <a href="http://html5up.net">HTML5 UP</a></li>
 					</ul>
 				</div>
 			</footer>
