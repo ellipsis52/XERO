@@ -1,0 +1,2 @@
+<button onClick={() => handleResend(message.id)}>🔁 Resend</button>
+<button onClick={() => handleEdit(message)}>✏️ Modifier</button>

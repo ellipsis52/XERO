@@ -1,0 +1,83 @@
+const express = require('express');
+const axios = require('axios');
+const dotenv = require('dotenv');
+dotenv.config();
+
+const app = express();
+app.use(express.json()); // Pour pouvoir traiter les données JSON envoyées en requête
+
+// Récupère ta clé API OpenAI
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
+
+// Fonction pour interagir avec l'API OpenAI (ChatGPT)
+const chatGPTRequest = async (message) => {
+    try {
+        const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+            model: 'gpt-4', // ou 'gpt-3.5-turbo' selon ce que tu préfères
+            messages: [
+                { role: 'system', content: 'You are an assistant helping with financial reports and transaction analysis.' },
+                { role: 'user', content: message },
+            ],
+        }, {
+            headers: {
+                'Authorization': `Bearer ${OPENAI_API_KEY}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        return response.data.choices[0].message.content;
+    } catch (error) {
+        console.error('Erreur avec l\'API OpenAI :', error);
+        return 'Désolé, une erreur est survenue lors de l\'analyse de votre demande.';
+    }
+};
+
+// Route pour analyser une transaction ou poser une question à ChatGPT
+app.post('/analyze', async (req, res) => {
+    const { message } = req.body;
+
+    // Si aucun message n'est fourni, retour d'une erreur
+    if (!message) {
+        return res.status(400).json({ error: 'Le message est requis pour l\'analyse.' });
+    }
+
+    // Appel de ChatGPT pour obtenir la réponse
+    const chatGPTResponse = await chatGPTRequest(message);
+
+    // Retourner la réponse de ChatGPT
+    res.json({ response: chatGPTResponse });
+});
+
+// Route pour récupérer des rapports financiers ou des conseils sur Xero
+app.post('/generateReport', async (req, res) => {
+    const { transactionData } = req.body;
+
+    // Exemple de message que tu enverrais à ChatGPT pour générer un rapport
+    const message = `Génère un rapport financier basé sur les transactions suivantes : ${JSON.stringify(transactionData)}`;
+
+    // Appel de ChatGPT pour obtenir le rapport
+    const reportResponse = await chatGPTRequest(message);
+
+    // Retourner le rapport généré par ChatGPT
+    res.json({ report: reportResponse });
+});
+
+// Démarrage du serveur
+app.listen(3000, () => {
+    console.log('Serveur en écoute sur le port 3000');
+});
+POST http://localhost:3000/analyze
+Content-Type: application/json
+
+{
+    "message": "Peux-tu m'aider à analyser les transactions du mois dernier ? Voici quelques détails : 1. Paiement de 500 EUR pour le service X, 2. Paiement de 200 EUR pour le service Y."
+}
+POST http://localhost:3000/generateReport
+Content-Type: application/json
+
+{
+    "transactionData": [
+        { "date": "2025-05-10", "amount": 500, "description": "Paiement Service X" },
+        { "date": "2025-05-12", "amount": 200, "description": "Paiement Service Y" }
+    ]
+}

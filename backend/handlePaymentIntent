@@ -1,0 +1,19 @@
+if (action === "alerter") {
+  await envoyerAlerteDiscord(`Transaction suspecte (${risque}) : ${raison}`);
+}
+import Transaction from './models/Transaction.js';
+
+await Transaction.create({
+  paymentId: paymentIntent.id,
+  amount: paymentIntent.amount,
+  created: new Date(),
+  gptAnalysis: { risque, raison, action }
+});
+function checkToken(req, res, next) {
+    const token = req.headers['authorization'];
+    if (token !== `Bearer ${process.env.API_SECRET}`) {
+      return res.status(401).json({ error: "Non autorisé" });
+    }
+    next();
+  }
+  app.post('/create-payment', checkToken, handlePaymentIntent);

@@ -1,0 +1,39 @@
+version: '3.9'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    restart: always
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+volumes:
+  mongo_data:
+version: '3.8'
+services:
+  client:
+    build: ./client
+    ports:
+      - "5173:80"
+    restart: always
+
+  server:
+    build: ./server
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./server:/app
+    restart: always

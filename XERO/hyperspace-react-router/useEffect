@@ -1,0 +1,17 @@
+useEffect(() => {
+  axios.get('/xero/clients')
+    .then(res => setClients(res.data.clients))
+    .catch(err => console.error('Erreur Xero :', err));
+}, []);
+app.get('/xero/clients', async (req, res) => {
+    const response = await axios.get('https://api.xero.com/api.xro/2.0/Contacts', {
+      headers: { Authorization: `Bearer ${process.env.XERO_ACCESS_TOKEN}` }
+    });
+    const clients = response.data.Contacts.map(c => ({
+      id: c.ContactID,
+      name: c.Name,
+      email: c.EmailAddress
+    }));
+    res.json({ clients });
+  });
+  

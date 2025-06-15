@@ -1,0 +1,152 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import saveAs from 'file-saver';
+
+import jsPDF from 'jspdf';
+
+export default function GptClientManager() {
+  const [clients, setClients] = useState([]);
+  const [selectedClient, setSelectedClient] = useState(null);
+  const [gptResponse, setGptResponse] = useState('');
+  const [promptText, setPromptText] = useState('');
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    setClients([
+      { id: '1', name: 'Alice de Webtechnicom', email: 'alice@webtechnicom.net' },
+      { id: '2', name: 'Bob de Netmanagement', email: 'bob@netmanagement.online' },
+    ]);
+  }, []);
+
+  const handleClientClick = (client) => {
+    setSelectedClient(client);
+    setGptResponse('');
+    setPromptText(`Rédige un message poétique de suivi pour ${client.name}, client avec l'adresse email ${client.email}.`);
+  };
+
+  const askGPT = async () => {
+    if (!selectedClient || !promptText) return;
+    setLoading(true);
+    try {
+      const res = await axios.post('/gpt4', { prompt: promptText });
+      setGptResponse(res.data.reply);
+    } catch (err) {
+      setGptResponse("Erreur lors de l'appel à GPT-4.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const sendEmail = async () => {
+    if (!selectedClient || !gptResponse) return;
+    try {
+      await axios.post('/send-email', {
+        to: selectedClient.email,
+        subject: 'Message de suivi personnalisé',
+        text: gptResponse,
+      });
+      alert('📧 Email envoyé !');
+    } catch (error) {
+      alert("Erreur lors de l'envoi de l'email.");
+    }
+  };
+
+  const exportPDF = () => {
+    const doc = new jsPDF();
+    doc.text(gptResponse, 10, 10);
+    doc.save(`Message_GPT_${selectedClient?.name}.pdf`);
+  };
+
+  const exportCSV = () => {
+    const blob = new Blob([
+      `Client,Email,Message\n"${selectedClient?.name}","${selectedClient?.email}","${gptResponse}"`
+    ], { type: 'text/csv;charset=utf-8;' });
+    saveAs(blob, `Message_GPT_${selectedClient?.name}.csv`);
+  };
+
+  return (
+    <div className="max-w-3xl min-h-screen p-4 mx-auto text-black bg-white">
+      <h2 className="mb-4 text-2xl font-bold">Gestion Clientèle avec GPT-4</h2>
+      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+        <div>
+          <h3 className="mb-2 text-xl font-semibold">Liste des clients</h3>
+          <ul className="bg-white border border-black divide-y divide-black rounded">
+            {clients.map((client) => (
+              <li
+                key={client.id}
+                className={`p-3 hover:bg-gray-100 cursor-pointer ${selectedClient?.id === client.id ? 'bg-gray-200 font-bold' : ''}`}
+                onClick={() => handleClientClick(client)}
+              >
+                {client.name} <span className="text-sm text-gray-600">({client.email})</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          {selectedClient ? (
+            <div className="p-4 bg-white border border-black rounded">
+              <h3 className="mb-2 text-xl font-semibold">Message pour {selectedClient.name}</h3>
+
+              <label className="block mb-2 text-sm font-medium text-gray-700">Texte d'inspiration (prompt)</label>
+              <textarea
+                value={promptText}
+                onChange={(e) => setPromptText(e.target.value)}
+                rows={4}
+                className="w-full p-2 mb-4 text-black border border-black rounded"
+              />
+
+              <div className="flex flex-wrap gap-2">
+                <button
+                  onClick={askGPT}
+                  className="px-4 py-2 text-white bg-black rounded hover:bg-gray-800"
+                >
+                  Demander à GPT-4
+                </button>
+                <button
+                  onClick={sendEmail}
+                  className="px-4 py-2 text-white bg-black rounded hover:bg-gray-800"
+                >
+                  Envoyer par email
+                </button>
+                <button
+                  onClick={exportPDF}
+                  className="px-4 py-2 text-white bg-black rounded hover:bg-gray-800"
+                >
+                  Exporter en PDF
+                </button>
+                <button
+                  onClick={exportCSV}
+                  className="px-4 py-2 text-white bg-black rounded hover:bg-gray-800"
+                >
+                  Exporter en CSV
+                </button>
+              </div>
+
+              <div className="mt-4 text-black whitespace-pre-wrap">
+                {loading ? '🌌 GPT réfléchit...' : gptResponse}
+              </div>
+            </div>
+          ) : (
+            <p className="text-gray-700">Sélectionne un client pour générer un message inspiré.</p>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+const client = await prisma.client.upsert({
+  where: { email: req.body.email },
+  update: { name: req.body.name },
+  create: {
+    name: req.body.name,
+    email: req.body.email,
+  },
+});
+
+const message = await prisma.message.create({
+  data: {
+    prompt,
+    response: reply,
+    clientId: client.id,
+  },
+});

@@ -1,0 +1,45 @@
+app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.error('❌ Échec de la validation webhook Stripe:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  switch (event.type) {
+    case 'payment_intent.succeeded':
+      console.log('✅ Paiement réussi:', event.data.object.id);
+
+      // Ici, le souffle lyrique de GPT-4
+      try {
+        const prompt = `Un paiement vient d'être effectué avec succès, ID: ${event.data.object.id}. Compose un message poétique pour célébrer cette transaction.`;
+
+        const gptResponse = await axios.post('https://api.openai.com/v1/chat/completions', {
+          model: 'gpt-4o-mini',
+          messages: [{ role: 'user', content: prompt }]
+        }, {
+          headers: {
+            'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+            'Content-Type': 'application/json'
+          }
+        });
+
+        console.log('✨ GPT-4 murmure:', gptResponse.data.choices[0].message.content);
+      } catch (error) {
+        console.error('🔥 Erreur lors de l’appel GPT-4 après paiement:', error.response?.data || error.message);
+      }
+      break;
+
+    case 'invoice.payment_failed':
+      console.warn('⚠️ Paiement échoué:', event.data.object.id);
+      break;
+
+    default:
+      console.log(`ℹ️ Événement Stripe reçu: ${event.type}`);
+  }
+
+  res.json({ received: true });
+});

@@ -1,0 +1,34 @@
+import React from "react";
+import "./App.css";
+
+function App() {
+  return (
+    <>
+      {/* Tu peux garder cette ligne si tu as Tailwind */}
+      <link rel="stylesheet" href="/hyperspace/css/main.css" />
+      <link rel="stylesheet" href="/hyperspace/css/fontawesome-all.min.css" />
+      <script src="/hyperspace/js/jquery.min.js"></script>
+      <script src="/hyperspace/js/browser.min.js"></script>
+      <script src="/hyperspace/js/breakpoints.min.js"></script>
+      <script src="/hyperspace/js/util.js"></script>
+      <script src="/hyperspace/js/main.js"></script>
+
+      <div id="page-wrapper">
+        <section id="banner" className="major">
+          <div className="inner">
+            <header className="major">
+              <h1>Bienvenue dans Partner 2.0</h1>
+            </header>
+            <div className="content">
+              <p>Une intégration Xero sublime dans une interface Hyperspace.</p>
+            </div>
+          </div>
+        </section>
+
+        {/* D’autres sections du thème peuvent venir ici */}
+      </div>
+    </>
+  );
+}
+
+export default App;

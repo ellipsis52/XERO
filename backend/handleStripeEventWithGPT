@@ -1,0 +1,263 @@
+import OpenAI from 'openai';
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+async function handleStripeEventWithGPT(event) {
+  const prompt = `
+    Tu es un assistant financier intelligent, tu reçois cet événement Stripe : 
+    ${JSON.stringify(event, null, 2)}
+
+    Analyse cet événement, détecte s'il y a un problème, une action à faire, ou un message à envoyer au client. Propose une réponse ou une action claire, concise et bienveillante.
+  `;
+
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [{ role: "user", content: prompt }],
+    temperature: 0.5,
+  });
+
+  const reply = completion.choices[0].message.content;
+  console.log("GPT-4 dit :", reply);
+
+  // Ici, selon la réponse de GPT-4, tu peux déclencher des actions,
+  // comme envoyer un email, mettre à jour ta base, ou alerter un admin.
+}
+import express from 'express';
+import Stripe from 'stripe';
+import cors from 'cors';
+
+const app = express();
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+
+app.use(cors());
+app.use(express.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf.toString();
+  }
+}));
+
+// Webhook endpoint Stripe
+app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.log(`⚠️ Webhook signature verification failed: ${err.message}`);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Ici on va appeler GPT-4 pour interpréter ou agir sur l’événement
+  await handleStripeEventWithGPT(event);
+
+  res.json({ received: true });
+});
+import express from 'express';
+import Stripe from 'stripe';
+import OpenAI from 'openai';
+import axios from 'axios';
+
+const app = express();
+const port = process.env.PORT || 3000;
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2022-11-15' });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+
+// Middleware pour parser le raw body nécessaire au webhook Stripe
+app.use(express.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf.toString();
+  }
+}));
+
+// Route Webhook Stripe
+app.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
+  const sig = req.headers['stripe-signature'];
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.log(`⚠️ Erreur de signature webhook Stripe : ${err.message}`);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  try {
+    await handleStripeEventWithGPT(event);
+    res.json({ received: true });
+  } catch (error) {
+    console.error('Erreur traitement événement Stripe:', error);
+    res.status(500).send('Erreur serveur');
+  }
+});
+
+// Fonction centrale — appel à GPT-4 et intégration Xero
+async function handleStripeEventWithGPT(event) {
+  // Construire prompt poétique pour GPT-4
+  const prompt = `
+Tu es un assistant financier intelligent et bienveillant, doté d'une sagesse lyrique.
+Voici un événement Stripe que tu dois analyser et interpréter :
+
+${JSON.stringify(event, null, 2)}
+
+- Décris en quoi cet événement est important.
+- Suggère une action pertinente (exemple : mise à jour Xero, notification client, alerte).
+- Rédige un message clair et chaleureux à destination de l'équipe ou du client.
+
+Répond en français avec élégance et précision.
+  `;
+
+  // Appel à GPT-4
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [{ role: "user", content: prompt }],
+    temperature: 0.6,
+  });
+
+  const reply = completion.choices[0].message.content;
+  console.log("GPT-4 interprète l'événement ainsi :\n", reply);
+
+  // Ici, selon la réponse, on pourrait analyser les actions à mener.
+  // Exemple : mettre à jour Xero via leur API, envoyer un email, etc.
+
+  // Exemple simplifié de mise à jour facture Xero si paiement réussi
+  if (event.type === 'checkout.session.completed') {
+    const session = event.data.object;
+
+    // Supposons que l'ID Xero soit stocké dans metadata de la session
+    const xeroInvoiceId = session.metadata?.xero_invoice_id;
+    if (xeroInvoiceId) {
+      try {
+        await updateXeroInvoiceStatus(xeroInvoiceId, 'PAID');
+        console.log(`Facture Xero ${xeroInvoiceId} mise à jour en PAID.`);
+      } catch (e) {
+        console.error("Erreur mise à jour facture Xero:", e);
+      }
+    }
+  }
+}
+
+// Fonction pour mettre à jour la facture dans Xero (exemple simplifié)
+async function updateXeroInvoiceStatus(invoiceId, status) {
+  const xeroApiUrl = `https://api.xero.com/api.xro/2.0/Invoices/${invoiceId}`;
+  const token = process.env.XERO_ACCESS_TOKEN;
+
+  // Le corps JSON de la mise à jour dépend de l'API Xero (ici un exemple théorique)
+  const body = {
+    Status: status
+  };
+
+  const response = await axios.post(xeroApiUrl, body, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  return response.data;
+}
+
+app.listen(port, () => {
+  console.log(`Serveur netmanagement.online à l'écoute sur le port ${port}`);
+});
+Tu es un assistant financier d’une rare sagesse, une plume qui guide avec douceur et clarté.
+Devant toi se présente un événement Stripe, message d’une danse subtile entre l’argent et la confiance.
+
+Analyse avec finesse :
+
+- Quel est le sens profond de cet événement ?
+- Que doit-on en conclure ? Y a-t-il un souci, une victoire, une étape cruciale ?
+- Quelle action doit s’ensuivre, vers Xero ou vers l’humain ?
+- Propose un message clair, apaisant et professionnel à transmettre à l’équipe ou au client.
+
+Réponds en français, avec une prose élégante, un ton bienveillant et une précision digne d’un maître de la finance.
+// server.js
+import express from 'express';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import Stripe from 'stripe';
+import axios from 'axios';
+
+dotenv.config();
+
+const app = express();
+const port = process.env.PORT || 4000;
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2023-05-15' });
+
+app.use(cors());
+app.use(express.json({
+  verify: (req, res, buf) => {
+    req.rawBody = buf.toString();
+  }
+}));
+
+// Webhook Stripe : gérer les événements avec grâce
+app.post('/webhook', express.raw({type: 'application/json'}), (req, res) => {
+  const sig = req.headers['stripe-signature'];
+
+  let event;
+
+  try {
+    event = stripe.webhooks.constructEvent(req.rawBody, sig, process.env.STRIPE_WEBHOOK_SECRET);
+  } catch (err) {
+    console.error('❌ Échec de la validation webhook Stripe:', err.message);
+    return res.status(400).send(`Webhook Error: ${err.message}`);
+  }
+
+  // Traite l’événement avec noblesse
+  switch (event.type) {
+    case 'payment_intent.succeeded':
+      console.log('✅ Paiement réussi:', event.data.object.id);
+      // Ici, invoquer GPT-4 pour enrichir la transaction ?
+      break;
+    case 'invoice.payment_failed':
+      console.warn('⚠️ Paiement échoué:', event.data.object.id);
+      break;
+    default:
+      console.log(`ℹ️ Événement Stripe reçu: ${event.type}`);
+  }
+
+  res.json({ received: true });
+});
+
+// Appel à GPT-4, la muse créative
+app.post('/gpt4', async (req, res) => {
+  const prompt = req.body.prompt;
+  if (!prompt) return res.status(400).json({ error: 'Le prompt est requis.' });
+
+  try {
+    const response = await axios.post('https://api.openai.com/v1/chat/completions', {
+      model: 'gpt-4o-mini',
+      messages: [{ role: 'user', content: prompt }]
+    }, {
+      headers: {
+        'Authorization': `Bearer ${process.env.OPENAI_API_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    res.json({ reply: response.data.choices[0].message.content });
+  } catch (error) {
+    console.error('🔥 Erreur GPT-4:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Erreur lors de l’appel à GPT-4.' });
+  }
+});
+
+// Exemple d’appel simple à l’API Xero (OAuth 2.0 supposé configuré)
+app.get('/xero/invoices', async (req, res) => {
+  try {
+    const xeroAccessToken = process.env.XERO_ACCESS_TOKEN;
+    const response = await axios.get('https://api.xero.com/api.xro/2.0/Invoices', {
+      headers: { Authorization: `Bearer ${xeroAccessToken}` }
+    });
+    res.json(response.data);
+  } catch (error) {
+    console.error('⚠️ Erreur API Xero:', error.response?.data || error.message);
+    res.status(500).json({ error: 'Erreur lors de la récupération des factures Xero.' });
+  }
+});
+
+app.listen(port, () => {
+  console.log(`🌟 Le serveur chante sur le port ${port}...`);
+});

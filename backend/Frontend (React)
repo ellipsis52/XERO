@@ -1,0 +1,9 @@
+const [token, setToken] = useState(localStorage.getItem("admin-token") || "");
+const [password, setPassword] = useState("");
+
+const login = async () => {
+  const res = await axios.post('/admin-login', { password });
+  localStorage.setItem("admin-token", res.data.token);
+  setToken(res.data.token);
+};
+

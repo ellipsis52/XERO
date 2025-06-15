@@ -1,0 +1,14 @@
+const DISCORD_WEBHOOK_URL = process.env.DISCORD_WEBHOOK_URL;
+
+async function sendDiscordNotification(message) {
+  try {
+    await axios.post(DISCORD_WEBHOOK_URL, {
+      content: message
+    });
+  } catch (error) {
+    console.error('⚠️ Erreur en envoyant la notification Discord:', error.message);
+  }
+}
+headers: {
+  'x-api-key': 'clef-secrete-celeste'
+}

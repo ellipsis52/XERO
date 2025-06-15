@@ -1,0 +1,3 @@
+app.get('/poetry', (req, res) => {
+  res.json(poeticLogs);
+});
