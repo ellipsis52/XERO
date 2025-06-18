@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-<<<<<<< HEAD
 Welcome, traveler of code,
 to the universe of XERO,
 where APIs sing and integrations dance.
