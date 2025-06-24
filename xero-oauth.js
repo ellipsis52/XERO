@@ -19,7 +19,7 @@ router.get('/xero/callback', async (req, res) => {
   const code = req.query.code;
 
   try {
-    const tokenRes = await axios.post('https://identity.xero.com/connect/token', new URLSearchParams({
+    const tokenRes = await axios.post('https://identity.xero.com/connect/tokenGET', new URLSearchParams({
       grant_type: 'authorization_code',
       code,
       redirect_uri,
