@@ -1,0 +1,13 @@
+async function getBankAccounts(accessToken, tenantId) {
+  const res = await axios.get(
+    "https://api.xero.com/api.xro/2.0/Accounts?where=Type==\"BANK\"",
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "xero-tenant-id": tenantId,
+      },
+    }
+  );
+  return res.data; // Liste des comptes bancaires
+}
+

@@ -1,89 +1,9 @@
 {
- HEAD
- HEAD
-  "name": "xero-frontend",
-  "version": "0.1.0"
-  "name": "mon-projet-react", 2f3f164 (Message clair expliquant les modifications)
-  "private": true,
-  "type": "module",
-  "scripts": {
-    "build": "react-router build",
-    "dev": "react-router dev",
-    "start": "node server.js",
-    "typecheck": "react-router typegen && tsc"
-  },
   "dependencies": {
-    "@prisma/client": "^6.8.2",
-    "@react-router/node": "^7.5.3",
-    "@react-router/serve": "^7.5.3",
-    "axios": "^1.5.0",
-    "cors": "^2.8.5",
+    "axios": "^1.10.0",
     "dotenv": "^16.5.0",
-    "express": "^4.21.2",
-    "file-saver": "^2.0.5",
-    "isbot": "^5.1.27",
-    "nodemailer": "^7.0.3",
-    "openai": "^4.100.0",
-    "prisma": "^6.8.2",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0",
-    "react-router": "^7.5.3",
-    "stripe": "^12.8.0"
-  },
-  "devDependencies": {
-    "@react-router/dev": "^7.5.3",
-    "@tailwindcss/vite": "^4.1.4",
-    "@types/node": "^20",
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
-    "tailwindcss": "^4.1.4",
-    "typescript": "^5.8.3",
-    "vite": "^6.3.3",
-    "vite-tsconfig-paths": "^5.1.4"
+    "express": "^5.1.0",
+    "openai": "^5.7.0",
+    "sqlite3": "^5.1.7"
   }
 }
- HEAD
-"engines": {
-  "node": "16.x"
-}
-
-"scripts": {
-  "build": "react-scripts build"
-}
-
-  "name": "sample-01-2",
-  "private": true,
-  "version": "0.0.0",
-  "type": "module",
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview"
-  },
-  "dependencies": {
-    "auth0-lock": "^14.0.0",
-    "react": "^19.1.0",
-    "react-dom": "^19.1.0"
-  },
-  "devDependencies": {
-    "@eslint/js": "^9.25.0",
-    "@types/react": "^19.1.2",
-    "@types/react-dom": "^19.1.2",
-    "@vitejs/plugin-react": "^4.4.1",
-    "eslint": "^9.25.0",
-    "eslint-plugin-react-hooks": "^5.2.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^16.0.0",
-    "vite": "^6.3.5"
-  }
-}
- 34d1dd5 (Added React integration to Hyperspace)
-"scripts": {
-  "dev": "vite",
-  "build": "vite build",
-  "preview": "vite preview"
-}
-"build": "vite build",
-"start": "node api/index.js"
-2f3f164 (Message clair expliquant les modifications)

@@ -1,0 +1,9 @@
+async function getInvoices(accessToken, tenantId) {
+  const res = await axios.get("https://api.xero.com/api.xro/2.0/Invoices", {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "xero-tenant-id": tenantId,
+    },
+  });
+  return res.data; // Contient la liste des factures
+}

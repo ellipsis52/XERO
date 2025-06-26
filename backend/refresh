@@ -1,0 +1,47 @@
+app.get("/xero/refresh", (req, res) => {
+  const userId = req.query.user_id || "default";
+
+  getTokenRow(userId, async (err, row) => {
+    if (err || !row) {
+      return res.status(404).send("No token found for that user.");
+    }
+
+    // si le jeton n’est pas encore expiré, inutile de rafraîchir
+    if (Date.now() < row.expires_at - 60_000) {
+      return res.json({ message: "Token still valid.", row });
+    }
+
+    try {
+      const fresh = await refreshAccessToken(userId, row.refresh_token, row.id);
+      res.json({ message: "Token refreshed!", fresh });
+    } catch (e) {
+      console.error(e.response?.data || e.message);
+      res.status(500).send("Refresh failed.");
+    }
+  });
+});
+
+
+async function getInvoices(accessToken, tenantId) {
+  const res = await axios.get(
+    "https://api.xero.com/api.xro/2.0/Invoices",
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "xero-tenant-id": tenantId
+      }
+    }
+  );
+  return res.data?.Invoices || [];
+}
+
+async function gptInterpret(text, question) {
+  const completion = await openai.chat.completions.create({
+    model: "gpt-4o-mini",
+    messages: [
+      { role: "system", content: "You are a financial analyst who explains Xero invoices in plain language." },
+      { role: "user", content: `Here are some invoices:\n\n${text}\n\nQuestion: ${question}` }
+    ]
+  });
+  return completion.choices[0].message.content.trim();
+}

@@ -1,0 +1,39 @@
+app.get("/xero/invoices/interpret", (req, res) => {
+  const userId   = req.query.user_id || "default";
+  const question = req.query.question || "Summarise key insights.";
+
+  getTokenRow(userId, async (err, row) => {
+    if (err || !row) return res.status(404).send("No token.");
+
+    try {
+      // 1) S’assure que l’access_token est frais
+      let accessToken  = row.access_token;
+      let refreshToken = row.refresh_token;
+      if (Date.now() >= row.expires_at - 60_000) {
+        const fresh = await refreshAccessToken(userId, refreshToken, row.id);
+        accessToken  = fresh.access_token;
+        refreshToken = fresh.refresh_token;
+      }
+
+      // 2) Lit le tenantId
+      const tenantId = row.tenant_id;
+
+      // 3) Récupère les factures
+      const invoices = await getInvoices(accessToken, tenantId);
+      const short    = JSON.stringify(invoices.slice(0, 10), null, 2);
+
+      // 4) Passe à GPT
+      const analysis = await gptInterpret(short, question);
+
+      res.json({ analysis, invoices: invoices.length });
+    } catch (e) {
+      console.error(e.response?.data || e.message);
+      res.status(500).send("Interpretation failed.");
+    }
+  });
+});
+module.exports = {
+  buildAuthUrl,
+  exchangeCodeForToken,
+  refreshAccessToken
+};

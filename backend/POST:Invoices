@@ -1,0 +1,30 @@
+async function createInvoice(accessToken, tenantId, invoiceData) {
+  const res = await axios.post(
+    "https://api.xero.com/api.xro/2.0/Invoices",
+    { Invoices: [invoiceData] },
+    {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "xero-tenant-id": tenantId,
+        "Content-Type": "application/json",
+      },
+    }
+  );
+  return res.data; // Confirmation de la création
+}
+invoiceData: Example
+{
+  "Type": "ACCREC",
+  "Contact": { "Name": "Client Poétique" },
+  "Date": "2025-06-26",
+  "DueDate": "2025-07-26",
+  "LineItems": [
+    {
+      "Description": "Consulting mystique",
+      "Quantity": 1,
+      "UnitAmount": 1500,
+      "AccountCode": "200"
+    }
+  ],
+  "Status": "AUTHORISED"
+}
