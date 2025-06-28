@@ -1,0 +1,13 @@
+# pack-refs with: peeled fully-peeled sorted 
+220c39f19f27f93c4888c197fc82e47970b70aee refs/heads/backup-before-force
+0fa37a09b1c25a138fc508a1ffbb486bab84ea70 refs/heads/main
+220c39f19f27f93c4888c197fc82e47970b70aee refs/heads/push-ready
+b043716983ce00cd6dd071d0629c1d2290190d73 refs/pull/1/head
+49813fa32cc7b3df3cf4c4ab324b3bbe6a151370 refs/pull/2/head
+8a08642f281d257bd9c28a9ba3e219424e23da93 refs/pull/3/head
+a186f2d7ead42d430386a716de361371d4163c51 refs/pull/4/head
+62615f0f35554ab008c00123ffd495ba0bbe2ee9 refs/pull/5/head
+1a968e2bc6ad05559575c7a1567e01d33b8662dc refs/pull/6/head
+99c841ba68ba5aa3b5cf35bae4d01b6406da19d5 refs/pull/7/head
+88f1b42a5e22f59855e7f3e30a2f06796a6308cd refs/pull/8/head
+4618c18f0cca3a578b164b8082555a4c66600204 refs/tags/xero

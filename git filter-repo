@@ -1,0 +1,80 @@
+#!/usr/bin/env bash
+# -----------------------------------------------------------------------------
+# purge_github_secrets.sh – Réécrit entièrement un dépôt Git sans son historique
+# contrefait (clés API, mots de passe, etc.) et pousse le résultat propre sur
+# une nouvelle branche.
+# -----------------------------------------------------------------------------
+#  USAGE
+#    ./purge_github_secrets.sh [<chemin_du_repo>] [<nouvelle_branche>]
+#
+#    <chemin_du_repo>  (optionnel) Chemin du dépôt à purger. Par défaut: CWD
+#    <nouvelle_branche> (optionnel) Nom de la branche propre. Par def.: main-purged
+#
+#  PRÉREQUIS
+#    - git ≥ 2.30
+#    - rsync
+# -----------------------------------------------------------------------------
+set -euo pipefail
+
+# --- Couleurs -----------------------------------------------------------------
+GREEN="\033[0;32m"
+RED="\033[0;31m"
+BOLD="\033[1m"
+NC="\033[0m"
+
+# --- Paramètres ---------------------------------------------------------------
+REPO_DIR="${1:-$(pwd)}"
+BRANCH="${2:-main-purged}"
+TEMP_DIR="$(mktemp -d)"
+
+printf "${BOLD}💽  Dépôt source     :${NC} %s\n" "$REPO_DIR"
+cd "$REPO_DIR"
+
+if [[ ! -d .git ]]; then
+  printf "${RED}✖  Ce dossier n'est pas un dépôt Git.${NC}\n" >&2
+  exit 1
+fi
+
+REMOTE_URL="$(git config --get remote.origin.url || true)"
+if [[ -z "$REMOTE_URL" ]]; then
+  printf "${RED}✖  Remote 'origin' introuvable.${NC}\n" >&2
+  exit 1
+fi
+printf "${BOLD}🔗  Remote origin    :${NC} %s\n" "$REMOTE_URL"
+
+# --- Copie propre -------------------------------------------------------------
+printf "${BOLD}📂  Copie vers        :${NC} %s\n" "$TEMP_DIR"
+rsync -a --progress --exclude '.git' "$REPO_DIR/" "$TEMP_DIR/"
+cd "$TEMP_DIR"
+
+# --- Réinitialisation Git -----------------------------------------------------
+printf "${GREEN}→ Initialisation d'un nouveau dépôt propre...${NC}\n"
+git init -q
+git remote add origin "$REMOTE_URL"
+
+# S'assure que .env est ignoré
+if ! grep -q '^\.env$' .gitignore 2>/dev/null; then
+  echo ".env" >> .gitignore
+fi
+
+# --- Premier commit -----------------------------------------------------------
+printf "${GREEN}→ Premier commit sans historique...${NC}\n"
+git add .
+GIT_AUTHOR_NAME="purifier" GIT_AUTHOR_EMAIL="noreply@example.com" \
+GIT_COMMITTER_NAME="purifier" GIT_COMMITTER_EMAIL="noreply@example.com" \
+  git commit -q -m "feat: dépôt purifié sans secret"
+
+# --- Renommage & push ---------------------------------------------------------
+printf "${GREEN}→ Renommage de la branche en %s...${NC}\n" "$BRANCH"
+git branch -M "$BRANCH"
+
+printf "${GREEN}→ Push forcé vers origin/%s...${NC}\n" "$BRANCH"
+if git push --force --set-upstream origin "$BRANCH"; then
+  printf "\n${GREEN}✓ Succès ! La branche propre '%s' est maintenant sur GitHub.${NC}\n" "$BRANCH"
+  printf "   Pense à changer tes clés API dans les dashboards concernés.\n"
+else
+  printf "\n${RED}✖  Le push a échoué. Vérifie les messages d'erreur GitHub.${NC}\n" >&2
+fi
+
+# --- Nettoyage ----------------------------------------------------------------
+trap 'rm -rf "$TEMP_DIR"' EXIT

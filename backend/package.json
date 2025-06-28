@@ -20,3 +20,8 @@
   "dev": "nodemon index.js",
   "test": "echo \"Error: no test specified\" && exit 1"
 }
+"main": "index.js",
+"x-type": "module",
+"scripts": {
+  "start": "npx tsx src/index.ts"
+},

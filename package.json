@@ -1,9 +1,45 @@
 {
   "dependencies": {
+    "@ai-sdk/openai": "^1.3.22",
+    "@ai-sdk/react": "^1.2.12",
+    "@auth0/ai-langchain": "^3.2.0",
+    "@auth0/ai-vercel": "^2.3.0",
+    "@auth0/nextjs-auth0": "^4.7.0",
+    "@langchain/langgraph": "^0.2.74",
+    "ai": "^4.3.16",
+    "auth0": "^4.26.0",
     "axios": "^1.10.0",
-    "dotenv": "^16.5.0",
+    "dotenv": "^16.6.1",
     "express": "^5.1.0",
+    "express-oauth2-jwt-bearer": "^1.6.1",
+    "googleapis": "^148.0.0",
+    "langchain": "^0.3.29",
     "openai": "^5.7.0",
-    "sqlite3": "^5.1.7"
-  }
+    "sqlite3": "^5.1.7",
+    "zod": "^3.25.67"
+  },
+  "name": "html5up-hyperspace",
+  "version": "1.0.0",
+  "description": "<<<<<<< HEAD <<<<<<< HEAD Welcome, traveler of code, to the universe of XERO, where APIs sing and integrations dance.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ellipsis52/XERO.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ellipsis52/XERO/issues"
+  },
+  "homepage": "https://github.com/ellipsis52/XERO#readme"
 }
+"x-type": "module",
+"main": "index.js",
+"scripts": {
+  "start": "npx tsx index.ts"
+},
