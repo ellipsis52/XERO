@@ -329,3 +329,70 @@ app.get('/api/entries/:service', oidc.ensureAuthenticated(), (req, res) => {
 app.listen(3000, () => console.log('🌍 OpenSpace ePlanet API active sur port 3000'));
 const session = require('express-session');
 app.use(session({ secret: 'openplanet', resave: true, saveUninitialized: false }));
+// server.js
+require('dotenv').config();
+const express = require('express');
+const session = require('express-session');
+const axios = require('axios');
+const qs = require('querystring');
+
+const createOIDC = require('./auth');
+
+const app = express();
+app.use(express.json());
+
+/* --- Sessions (nécessaires au middleware Okta) --- */
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || 'openplanet',
+    resave: false,
+    saveUninitialized: false,
+  })
+);
+
+/* --- Okta / Otto --- */
+const oidc = createOIDC();
+app.use(oidc.router);
+
+/* --- Routes protégées --- */
+app.get('/dashboard', oidc.ensureAuthenticated(), (req, res) => {
+  res.send(`Bienvenue, ${req.userContext.userinfo.email} !`);
+});
+
+/* --- Xero OAuth2 – échange du code contre un token --- */
+async function getXeroAccessToken(code) {
+  const data = {
+    grant_type: 'authorization_code',
+    code,
+    redirect_uri:
+      process.env.XERO_REDIRECT_URI || 'http://localhost:3000/xero/callback',
+    client_id: process.env.XERO_CLIENT_ID,
+    client_secret: process.env.XERO_CLIENT_SECRET,
+  };
+
+  const response = await axios.post(
+    'https://identity.xero.com/connect/token',
+    qs.stringify(data),
+    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+  );
+
+  return response.data.access_token; // ← ton précieux sésame
+}
+
+/* --- Exemple de callback Xero --- */
+app.get('/xero/callback', async (req, res) => {
+  const { code } = req.query;
+  try {
+    const token = await getXeroAccessToken(code);
+    res.json({ message: 'Token Xero obtenu !', token });
+  } catch (err) {
+    console.error(err.response?.data || err);
+    res.status(500).send('Échec de l’échange de token Xero.');
+  }
+});
+
+/* --- Lancement du serveur --- */
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () =>
+  console.log(`🚀 OpenSpace ePlanet tourne sur http://localhost:${PORT}`)
+);
