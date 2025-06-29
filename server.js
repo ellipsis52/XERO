@@ -278,3 +278,54 @@ app.listen(port, () => {
   console.log(`🌐 Serveur ouvert sur http://localhost:${port}`);
 });
 >>>>>>> 2f3f164 (Message clair expliquant les modifications)
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
+const oidc = require('./middleware/auth'); // Otto by Okta
+
+const app = express();
+app.use(express.json());
+app.use(oidc.router);
+
+const ROOT = path.join(__dirname, 'OpenSpace_ePlanet');
+
+app.post('/api/write-entry', oidc.ensureAuthenticated(), (req, res) => {
+  const { service, amount, currency, reference } = req.body;
+  const now = new Date().toISOString();
+  const user = req.userContext.userinfo.email;
+
+  const entry = {
+    date: now,
+    service,
+    amount,
+    currency,
+    status: 'Initiated',
+    reference,
+    initiated_by: user,
+  };
+
+  const dir = path.join(ROOT, service, 'logs');
+  const filePath = path.join(dir, `${now.slice(0, 10)}-${reference}.json`);
+
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(filePath, JSON.stringify(entry, null, 2));
+
+  res.status(201).json({ message: 'Écriture créée', path: filePath });
+});
+
+app.get('/api/entries/:service', oidc.ensureAuthenticated(), (req, res) => {
+  const dir = path.join(ROOT, req.params.service, 'logs');
+  if (!fs.existsSync(dir)) return res.status(404).send('Aucun fichier');
+
+  const files = fs.readdirSync(dir).filter(f => f.endsWith('.json'));
+  const entries = files.map(file => {
+    const content = fs.readFileSync(path.join(dir, file));
+    return JSON.parse(content);
+  });
+
+  res.json(entries);
+});
+
+app.listen(3000, () => console.log('🌍 OpenSpace ePlanet API active sur port 3000'));
+const session = require('express-session');
+app.use(session({ secret: 'openplanet', resave: true, saveUninitialized: false }));
