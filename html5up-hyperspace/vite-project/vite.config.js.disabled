@@ -1,0 +1,22 @@
+// vite.config.js
+import { defineConfig } from 'vite';
+import react from '@vitejs/plugin-react-swc';
+
+// --------------------------------------------------
+//  Vite – Configuration unifiée et sans doublons
+// --------------------------------------------------
+export default defineConfig({
+  plugins: [react()],
+  server: {
+    port: 5173,          // ↳ change‑le si nécessaire
+    open: true           // ↳ ouvre le navigateur au démarrage
+  },
+  build: {
+    outDir: 'dist',      // ↳ dossier de sortie
+    sourcemap: false,    // ↳ active 'true' pour déboguer en prod
+    emptyOutDir: true
+  },
+  preview: {
+    port: 8080           // ↳ port pour 'vite preview'
+  },
+});
