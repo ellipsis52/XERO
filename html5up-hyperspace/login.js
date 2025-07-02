@@ -1,4 +1,4 @@
-{
+{https://mylogin.netmanagement.online/login
     "pageTitle": "Log in | ${clientName}",
     "title": "Welcome",
     "description": "Log in to ${companyName} to continue to ${clientName}.",
