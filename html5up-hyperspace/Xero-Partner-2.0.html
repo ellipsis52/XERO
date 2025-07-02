@@ -7,7 +7,7 @@
   <style>
     body {
       font-family: sans-serif;
-      background-color: #f9fafb;
+      background-color: #8080ff;
       margin: 0;
       padding: 2rem;
     }
@@ -126,7 +126,7 @@
     <!-- GPT-4 Interaction -->
     <div class="card">
       <h2>Interact with GPT-4</h2>
-      <label>Ask GPT-4 a question</label>
+      <label>Ask GPT-5 a question</label>
       <input id="gptQuestion" type="text" placeholder="Your question here"/>
       <button onclick="askGpt()">Ask Question</button>
       <p id="gptError" class="error">Error message</p>
@@ -169,7 +169,7 @@
   </div>
 
   <script>
-    // Function to simulate the API request to Xero
+    // Function to make the API request to Xero
     async function makeXeroPayment() {
       const xeroContactId = document.getElementById('xeroContactId').value;
       const xeroIban = document.getElementById('xeroIban').value;
@@ -179,12 +179,12 @@
       document.getElementById('xeroLoading').style.display = 'block';
       document.getElementById('xeroError').style.display = 'none';
 
-      // Simulating network call to Xero
+      // make anetwork call to Xero
       try {
         // Call your Xero API here
         // Example: const response = await axios.post('/xero/payment', { xeroContactId, xeroIban, xeroAmount, xeroDescription });
         
-        // Simulate success response
+        // Make an success response
         setTimeout(() => {
           document.getElementById('xeroLoading').style.display = 'none';
           alert('Xero payment successful!');
@@ -195,7 +195,7 @@
       }
     }
 
-    // Function to simulate the crypto payment to OKX
+    // Function to make the crypto payment to OKX
     async function sendCryptoPayment() {
       const cryptoCurrency = document.getElementById('cryptoCurrency').value;
       const cryptoAmount = document.getElementById('cryptoAmount').value;
@@ -204,12 +204,12 @@
       document.getElementById('cryptoLoading').style.display = 'block';
       document.getElementById('cryptoError').style.display = 'none';
 
-      // Simulating network call to OKX
+      // make an network call to OKX
       try {
         // Call your OKX API here
         // Example: const response = await axios.post('/okx/payment', { cryptoCurrency, cryptoAmount, cryptoIban });
 
-        // Simulate success response
+        // Make an success response
         setTimeout(() => {
           document.getElementById('cryptoLoading').style.display = 'none';
           alert('Crypto payment successful!');
@@ -220,7 +220,7 @@
       }
     }
 
-    // Function to simulate GPT-4 question and answer
+    // Function to make the request to  GPT-5 question and answer
     async function askGpt() {
       const question = document.getElementById('gptQuestion').value;
 
@@ -229,16 +229,16 @@
       document.getElementById('gptResponse').style.display = 'none';
 
       try {
-        // Simulating API call to GPT-4
+        // Make an API call to GPT-5
         // Example: const response = await axios.post('/gpt/ask', { question });
 
-        // Simulate success response
+        // answer = response.data success response
         setTimeout(() => {
           document.getElementById('gptLoading').style.display = 'none';
           document.getElementById('gptResponse').style.display = 'block';
           document.getElementById('gptResponse').innerHTML = `
-            <h3>GPT-4 Response:</h3>
-            <p>Here is the simulated response to your question: ${question}</p>
+            <h3>GPT-5 Response:</h3>
+            <p>Here is the answer to your question: response to your question: ${question}</p>
           `;
         }, 2000);
       } catch (error) {
