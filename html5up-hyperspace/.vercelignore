@@ -2,36 +2,7 @@
 mon-projet-react/
 vite-project/
 repo-clean/
-nginx-openid-connect/
-# Ignorer les fichiers de tests
-test/
-# Ignorer les fichiers de configuration
-config/
-# Ignorer les fichiers de documentation
-docs/
-# Ignorer les fichiers de build
-build/
-# Ignorer les fichiers de source
-src/
-# Ignorer les fichiers de test
-test/
-# Ignorer les fichiers de configuration
-config/
-# Ignorer les fichiers de documentation
-docs/
-# Ignorer les fichiers de build
-build/
-# Ignorer les fichiers de source
-src/
-# Ignorer les fichiers de test
-test/
-# Ignorer les fichiers de configuration
-config/
-# Ignorer les fichiers de documentation
-docs/
-# Ignorer les fichiers de build
-build/
-# 
+nginx-openid-connect/# 
 mon-projet-react/
 vite-project/
 repo-clean/

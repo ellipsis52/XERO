@@ -46,3 +46,9 @@
 "scripts": {
   "install": "npm --prefix backend install"
 }
+{
+  "private": true,
+  "scripts": {
+    "install": "npm --prefix backend install"
+  }
+}
