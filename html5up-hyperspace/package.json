@@ -36,9 +36,13 @@
   "author": "",
   "license": "ISC"
 }
+
+// package.json
 {
-  "private": true,
-  "scripts": {
-    "postinstall": "npm --prefix backend install"
-  }
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+"scripts": {
+  "install": "npm --prefix backend install"
 }
