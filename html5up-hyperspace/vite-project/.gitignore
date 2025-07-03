@@ -1,8 +1,0 @@
-# Node
-node_modules
-
-# Vite
-frontend/dist
-
-# Vercel
-.vercel

@@ -1,0 +1,6 @@
+# Ignorer anciens prototypes React ou tests
+mon-projet-react/
+vite-project/
+repo-clean/
+nginx-openid-connect/
+nginx-oidc-redirect.php
