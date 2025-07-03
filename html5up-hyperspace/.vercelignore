@@ -4,3 +4,12 @@ vite-project/
 repo-clean/
 nginx-openid-connect/
 nginx-oidc-redirect.php
+# Ancien prototype Hyperspace React
+html5up-hyperspace/
+# Sous‑projet React
+hyperspace-react/
+# Autres prototypes à ignorer
+mon-projet-react/
+vite-project/
+repo-clean/
+nginx-openid-connect/
