@@ -36,4 +36,9 @@
   "author": "",
   "license": "ISC"
 }
-
+{
+  "private": true,
+  "scripts": {
+    "postinstall": "npm --prefix backend install"
+  }
+}
