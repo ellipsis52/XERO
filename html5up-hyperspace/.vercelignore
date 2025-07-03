@@ -3,12 +3,35 @@ mon-projet-react/
 vite-project/
 repo-clean/
 nginx-openid-connect/
-nginx-oidc-redirect.php
-# Ancien prototype Hyperspace React
-html5up-hyperspace/
-# Sous‑projet React
-hyperspace-react/
-# Autres prototypes à ignorer
+# Ignorer les fichiers de tests
+test/
+# Ignorer les fichiers de configuration
+config/
+# Ignorer les fichiers de documentation
+docs/
+# Ignorer les fichiers de build
+build/
+# Ignorer les fichiers de source
+src/
+# Ignorer les fichiers de test
+test/
+# Ignorer les fichiers de configuration
+config/
+# Ignorer les fichiers de documentation
+docs/
+# Ignorer les fichiers de build
+build/
+# Ignorer les fichiers de source
+src/
+# Ignorer les fichiers de test
+test/
+# Ignorer les fichiers de configuration
+config/
+# Ignorer les fichiers de documentation
+docs/
+# Ignorer les fichiers de build
+build/
+# 
 mon-projet-react/
 vite-project/
 repo-clean/
