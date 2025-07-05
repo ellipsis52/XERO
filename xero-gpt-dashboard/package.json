@@ -64,3 +64,6 @@
     "dev": "nodemon backend/index.js"
   }
 }
+"scripts": {
+  "build": "vite build"
+}

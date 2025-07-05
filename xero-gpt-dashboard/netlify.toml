@@ -45,3 +45,8 @@ runtime = "nodejs20"
 handler = "index.handler"
 events = [{ httpMethod = "GET" }, { httpMethod = "POST" }]
 environment = { NODE_ENV = "production" }
+
+[build]
+base = "xero-gpt-dashboard"
+command = "npm run build"
+publish = "xero-gpt-dashboard/dist"
