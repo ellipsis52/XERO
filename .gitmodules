@@ -1,0 +1,3 @@
+[submodule "XERO-fresh"]
+    path = XERO-fresh
+    url = https://github.com/ellipsis52/XERO-fresh.git
