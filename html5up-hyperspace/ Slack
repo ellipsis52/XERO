@@ -1,0 +1,10 @@
+- name: Notify on Discord
+  if: success()
+  uses: Ilshidur/action-discord@v3
+  with:
+    webhook: ${{ secrets.DISCORD_WEBHOOK }}
+    message: |
+      ✅ **Build ${{ github.run_number }}** déployée avec succès !
+      • Repo : ${{ github.repository }}
+      • Commit : ${{ github.sha }}
+      • Vercel URL : https://netmanagement-frontend-.vercel.app

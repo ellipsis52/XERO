@@ -1,0 +1,63 @@
+name: ✨ Déploiement continu vers Vercel & VPS ✨
+
+on:
+  push:
+    branches:
+      - main        # change si ta branche de prod a un autre nom
+  workflow_dispatch: # permet un déclenchement manuel
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    # 1️⃣ Invocation : clonage du dépôt (et de tous ses sous-modules)
+    - name: Checkout repository (with submodules)
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        submodules: recursive
+
+    # 2️⃣ Alignement stellaire : installation de Node
+    - name: Use Node 20 LTS
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: "npm"
+
+    # 3️⃣ Incubation : installation des dépendances
+    - name: Install deps
+      run: |
+        npm ci         # plus fiable que npm install pour CI
+        npm run build  # compile ton front (Vite) OU ton backend si besoin
+
+    # 4️⃣ Vérification : tests éventuels
+    # - name: Run tests
+    #   run: npm test
+
+    # 5️⃣ Projection astrale : déploiement vers Vercel
+    - name: Deploy to Vercel
+      env:
+        VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+      run: |
+        npx vercel --prod --confirm \
+                   --token $VERCEL_TOKEN \
+                   --org $VERCEL_ORG_ID \
+                   --project $VERCEL_PROJECT_ID
+
+    # 6️⃣ Résonance terrestre : mise à jour de ton VPS (optionnel)
+    - name: Deploy backend on VPS via SSH
+      if: ${{ secrets.VPS_SSH_KEY != '' }}
+      uses: appleboy/ssh-action@v1.0.0
+      with:
+        host: ${{ secrets.VPS_HOST }}
+        username: ${{ secrets.VPS_USER }}
+        key: ${{ secrets.VPS_SSH_KEY }}
+        port: 22
+        script: |
+          cd /var/www/api-server
+          git pull origin main
+          npm ci --omit=dev
+          pm2 reload ecosystem.config.js --env production
