@@ -1,0 +1,9 @@
+[submodule "XERO-fresh"]
+path = XERO-fresh
+url = https://github.com/ellipsis52/XERO-fresh.git
+[submodule "nginx-openid-connect"]
+path = nginx--openid-connect
+url = https://github.com/ellipsis52/nginx--openid-connect.git
+[submodule "repo-clean"]
+path = repo-clean
+url = https://github.com/ellipsis52/repo-clean.git
