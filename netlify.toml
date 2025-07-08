@@ -50,8 +50,3 @@ environment = { NODE_ENV = "production" }
 base = "xero-gpt-dashboard"
 command = "npm run build"
 publish = "xero-gpt-dashboard/dist"
-
-[build]
-base = "XERO"
-command = "npm run build"
-publish = "XERO/dist"
