@@ -1,36 +1,14 @@
-
-[[redirects]]
-from = "/blog/:splat"
-to = "/blog/index.html"
-status = 200
-
 [build]
 command = "npm run build"
 publish = "XERO/dist"
-base = "https://xero.netlify.app"
-base_url = "https://xero.netlify.app"
-base_dir = "XERO"
-Gocodeonfig = "XERO/hyperspace-react-router.config.js"
-Goclientconfig = "XERO/hyperspace-react-router.client.config.js"
-Goclient = "XERO/hyperspace-react-router.client.js"
-Gohost = "XERO/hyperspace-react-router.server.js"
-Gobase = "XERO/hyperspace-react-router.base.js"
-Gobaseconfig = "XERO/hyperspace-react-router.base.config.js"
-Gobaseclient = "XERO/hyperspace-react-router.base.client.js"
-Gobaseclientconfig = "XERO/hyperspace-react-router.base.client.config.js"
-Gobaseserver = "XERO/hyperspace-react-router.base.server.js"
-Gobaseserverconfig = "XERO/hyperspace-react-router.base.server.config.js"
 
 [[redirects]]
 from = "/blog/:splat"
 to = "/blog/index.html"
 status = 200
-[build]
-command = "npm run build"
-publish = "dist"
 
 [context.production.environment]
-REACT_APP_GOBASESERVERCONFIG = NODE_ENV = "production"
+NODE_ENV = "production"
 REACT_APP_BASE_URL = "https://xero.netlify.app"
 REACT_APP_BASE_DIR = "XERO"
 REACT_APP_GOBASE = "XERO/hyperspace-react-router.base.js"
@@ -38,3 +16,14 @@ REACT_APP_GOBASECONFIG = "XERO/hyperspace-react-router.base.config.js"
 REACT_APP_GOBASECLIENT = "XERO/hyperspace-react-router.base.client.js"
 REACT_APP_GOBASECLIENTCONFIG = "XERO/hyperspace-react-router.base.client.config.js"
 REACT_APP_GOBASESERVER = "XERO/hyperspace-react-router.base.server.js"
+REACT_APP_GOBASESERVERCONFIG = "XERO/hyperspace-react-router.base.server.config.js"
+[context.development.environment]
+NODE_ENV = "development"
+REACT_APP_BASE_URL = "http://localhost:3000"
+REACT_APP_BASE_DIR = "XERO"
+REACT_APP_GOBASE = "XERO/hyperspace-react-router.base.js"
+REACT_APP_GOBASECONFIG = "XERO/hyperspace-react-router.base.config.js"
+REACT_APP_GOBASECLIENT = "XERO/hyperspace-react-router.base.client.js"
+REACT_APP_GOBASECLIENTCONFIG = "XERO/hyperspace-react-router.base.client.config.js"
+REACT_APP_GOBASESERVER = "XERO/hyperspace-react-router.base.server.js"
+REACT_APP_GOBASESERVERCONFIG = "XERO/hyperspace-react-router.base.server.config.js"
