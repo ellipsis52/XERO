@@ -1,30 +1,6 @@
-[build]
-base = "xero-gpt-dashboard"
-command = "npm run build"
-publish = "xero-gpt-dashboard/dist"
-environment = { NODE_VERSION = "22.17.0" }
-
-[dev]
-command = "npm run dev --prefix xero-gpt-dashboard"
-port = 5173
-targetPort = 5173
-
-[context.production.environment]
-NODE_ENV = "production"
 
 [[redirects]]
-from = "/api/*"
-to = "http://localhost:3000/:splat"
+from = "/blog/:splat"
+to = "/blog/index.html"
 status = 200
-force = true
 
-[functions]
-directory = "backend/functions"
-
-[[functions]]
-entrypoint = "api"
-directory = "backend/functions/api"
-runtime = "nodejs20"
-handler = "index.handler"
-events = [{ httpMethod = "GET" }, { httpMethod = "POST" }]
-environment = { NODE_ENV = "production" }
