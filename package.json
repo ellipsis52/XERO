@@ -1,6 +1,10 @@
 {
   "private": true,
   "scripts": {
-    "install": "npm --prefix backend install"
+    "install": "npm --prefix backend install",
+    "build": "npm --prefix frontend run build"
   }
+}
+"scripts": {
+  "build": "vite build"
 }
