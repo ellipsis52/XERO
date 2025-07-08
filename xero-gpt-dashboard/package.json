@@ -1,69 +1,19 @@
 {
-  "name": "xero-backend",
-  "version": "1.0.0",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js"
-  },
-  "dependencies": {
-    "express": "^5.1.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.0.2"
-  },
-  "author": "API netmanagement.online",
-  "license": "ISC"
-}
-{
+  "name": "xero-app",
   "private": true,
   "scripts": {
-    "install": "npm --prefix backend install"
-  }
-}
-{
-  "name": "xero-frontend",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
+    "dev": "vite",
     "build": "vite build",
-    "dev": "vite"
-  },
-  "devDependencies": {
-    "vite": "^4.0.0"
-  }
-}
-{
-  "name": "xero-frontend",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "build": "npm run build --prefix frontend",
-    "start": "node backend/index.js",
-    "dev": "nodemon backend/index.js"
+    "preview": "vite preview"
   },
   "dependencies": {
-    "express": "^5.1.0",
-    "cors": "^2.8.5",
-    "dotenv": "^16.5.0"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "nodemon": "^3.0.2"
+    "vite": "^5.0.0",
+    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0"
   }
-}
-{
-  "private": true,
-  "scripts": {
-    "install-backend": "npm --prefix backend install",
-    "install-frontend": "npm --prefix xero-gpt-dashboard install",
-    "build": "npm run build --prefix xero-gpt-dashboard",
-    "start": "node backend/index.js",
-    "dev": "nodemon backend/index.js"
-  }
-}
-"scripts": {
-  "build": "vite build"
 }

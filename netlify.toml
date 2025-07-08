@@ -1,0 +1,57 @@
+[build]
+base = "frontend"
+command = "npm install && npm run build"
+publish = "frontend/dist"
+
+[build.environment]
+NODE_VERSION = "22.17.0"
+
+[build]
+command = "npm run build --prefix xero-gpt-dashboard"
+publish = "xero-gpt-dashboard/dist"
+
+[dev]
+command = "npm run dev --prefix xero-gpt-dashboard"
+port = 5173
+targetPort = 5173
+
+[context.production.environment]
+NODE_ENV = "production"
+
+[context.production]
+command = "npm run build --prefix xero-gpt-dashboard"
+publish = "xero-gpt-dashboard/dist"
+
+[build]
+base = "xero-gpt-dashboard"
+command = "npm run build"
+publish = "xero-gpt-dashboard/dist"
+[build.environment]
+NODE_VERSION = "22.17.0"
+
+[[redirects]]
+from = "/api/*"
+to = "http://localhost:3000/:splat"
+status = 200
+force = true
+
+[functions]
+directory = "backend/functions"
+
+[[functions]]
+entrypoint = "api"
+directory = "backend/functions/api"
+runtime = "nodejs20"
+handler = "index.handler"
+events = [{ httpMethod = "GET" }, { httpMethod = "POST" }]
+environment = { NODE_ENV = "production" }
+
+[build]
+base = "xero-gpt-dashboard"
+command = "npm run build"
+publish = "xero-gpt-dashboard/dist"
+
+[build]
+base = "XERO"
+command = "npm run build"
+publish = "XERO/dist"

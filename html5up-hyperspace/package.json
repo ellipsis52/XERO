@@ -1,14 +1,22 @@
 {
-  "name": "xero-partner-html",
-  "version": "1.0.0",
+  "name": "xero-app",
   "private": true,
   "scripts": {
-    "build": "echo 'Static HTML - no build step'"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "tailwindcss": "^3.3.0",
+    "autoprefixer": "^10.4.0",
+    "postcss": "^8.4.0"
   }
 }
-{
-  "private": true,
-  "scripts": {
-    "install": "npm --prefix backend install"
-  }
-}
+// vite.config.js
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
