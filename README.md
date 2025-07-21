@@ -96,7 +96,7 @@ This repository merges a powerful backend with an elegant frontend to compose an
 
 ## 🚀 Getting Started
 
-Clone the repository: unzip the file
+Clone the repository: unzip the file IPRANET_NETMANAGEMENT4
 
 ```bash
 git clone https://github.com/ellipsis52/xero-partner-netmanagement.online-integration.git
